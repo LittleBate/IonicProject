@@ -11,7 +11,8 @@
     <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
     <link href="css/ionic.app.css" rel="stylesheet">
     -->
-
+	<script src="lib/ionic/js/angular/angular-resource.min.js"></script>
+	
     <!-- ionic/angularjs js -->
     <script src="lib/ionic/js/ionic.bundle.js"></script>
 
@@ -21,65 +22,109 @@
     <!-- your app's js -->
     <script src="js/app.js"></script>
   </head>
-  <body ng-app="BlaBlaCar" ng-controller="TodoCtrl">
-
+  <body ng-app="BlaBlaCar" ng-controller="BlaBlaCtrl">
 	<ion-side-menus>
-	
-		<ion-side-menu-content>
+		<!-- Center content -->
+		<ion-side-menu-content ng-controller="BlaBlaCtrl">
 			<ion-header-bar class="bar-dark">
-				<h1 class="title">Todo</h1>
-				
-				<button class="button button-icon" ng-click="newTask()">
-					<i class="icon ion-compose"></i>
+				<button class="button button-icon" ng-click="toggleLeft()">
+					<i class="icon ion-navicon"></i>
 				</button>
+				<h1 class="title">Trouvez votre covoiturage</h1>
 			</ion-header-bar>
-			<ion-content>
-				<ion-list>
-				  <ion-item ng-repeat="task in tasks">
-					{{task.title}}
-				  </ion-item>
-				</ion-list>
+			<ion-content>	<div class="container">
+				<div class="row responsive-sm">
+					<div class="col list">
+						<div class="item">
+							<input type="text" class="form-control" placeholder="De" ng-model="search.depart"/>	
+						</div>
+						<div class="item">
+							<input type="text" class="form-control" placeholder="A" ng-model="search.arrive"/>	
+						</div>
+						<div class="item">
+							<input type="text" class="form-control" placeholder="jj/mm/aaaa" ng-model="search.date"/>	
+						</div>
+					</div>
+					<div class="col">
+						<button class="button button-icon" ng-click="search()">
+							<i class="icon ion-search"></i>
+						</button>
+						<button class="button button-icon" ng-click="clear()">
+							<i class="icon ion-close-circled"></i>
+						</button>
+					</div>
+				</div>				
+				<div class="row responsive-sm">
+					<div class="col">
+						<p class="text-center">20 millions de membres avec profil vérifié pour voyager en toute sérénité </p>
+					</div>
+				</div>				
+				<div class="row responsive-sm" ng-if="search.showResult">
+					<ul class="list-group margin">
+						<li class="list-group-item transparent" ng-repeat="trajet in search.trajetCherche">
+							<div class="row">
+								<div class="col-sm-4">
+									<label >Depart : {{trajet.depart}}</label>
+								</div>
+								<div class="col-sm-4">
+									<label >Arrive : {{trajet.arrive}}</label>
+								</div>
+								<div class="col-sm-4">
+									<label >Date : {{trajet.date}}</label>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<div class="row responsive-sm">
+					<div class="col">
+						<img src="img/femme.png" class="img-circle center-block" width="150" height="150"/>
+						<div>
+							<label>Avis laissé à Florent S</label>
+							<p>
+							"Trajet très agréable, rapide et très sympa. Vous pouvez lui faire confiance, n'hésitez pas à covoiturer avec Florent."
+							</p>
+							<label>Corinne C</label>
+						</div>
+					</div>
+					<div class="col"></div>
+					<div class="col">
+						<img src="img/homme.png" class="img-circle center-block" width="150" height="150"/>
+						<div>
+							<label>Avis laissé à Patricia B</label>
+							<p>
+							"Passagers ponctuels et très sympathiques. Le voyage Lyon-Paris est passé très vite."
+							</p>
+							<label>Dominique S</label>
+						</div>
+					</div>
+					<div class="col"></div>
+					<div class="col">
+						<img src="img/femme2.png" class="img-circle center-block" width="150" height="150"/>
+						<div>
+							<label>Avis laissé à William L</label>
+							<p>
+							"Excellent trajet avec William, très convivial et ponctuel !"
+							</p>
+							<label>Marion C</label>
+						</div>
+					</div>
+				</div>
+			</div>
 			</ion-content>
 		</ion-side-menu-content>
-		
+
+		<!-- Left menu -->
 		<ion-side-menu side="left">
+		
 			<ion-header-bar class="bar-dark">
-				<h1 class="title">Projects</h1>
+			  <h1 class="title">Projects</h1>
+			  <button class="button button-icon ion-plus">
+			  </button>
 			</ion-header-bar>
 		</ion-side-menu>
+  
+	</ion-side-menus>
 		
-	</ion-side-menus>	
-	
-	<script id="new-task.html" type="text/ng-template">
-
-	  <div class="modal">
-
-		<!-- Modal header bar -->
-		<ion-header-bar class="bar-secondary">
-		  <h1 class="title">New Task</h1>
-		  <button class="button button-clear button-positive" ng-click="closeNewTask()">Cancel</button>
-		</ion-header-bar>
-
-		<!-- Modal content area -->
-		<ion-content>
-
-		  <form ng-submit="createTask(task)">
-			<div class="list">
-			  <label class="item item-input">
-				<input type="text" placeholder="What do you need to do?" ng-model="task.title">
-			  </label>
-			</div>
-			<div class="padding">
-			  <button type="submit" class="button button-block button-positive">Create Task</button>
-			</div>
-		  </form>
-
-		</ion-content>
-
-	  </div>
-
-	</script>
-
-	
   </body>
 </html>
