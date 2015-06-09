@@ -26,23 +26,24 @@
 	<ion-side-menus>
 		<!-- Center content -->
 		<ion-side-menu-content ng-controller="BlaBlaCtrl">
-			<ion-header-bar class="bar-dark">
+			<ion-header-bar class="bar-balanced">
 				<button class="button button-icon" ng-click="toggleLeft()">
 					<i class="icon ion-navicon"></i>
 				</button>
 				<h1 class="title">Trouvez votre covoiturage</h1>
 			</ion-header-bar>
-			<ion-content>	<div class="container">
+			<ion-content>	
+			<div class="container">
 				<div class="row responsive-sm">
 					<div class="col list">
 						<div class="item">
-							<input type="text" class="form-control" placeholder="De" ng-model="search.depart"/>	
+							<input type="text" class="form-control" placeholder="De" ng-model="depart"/>	
 						</div>
 						<div class="item">
-							<input type="text" class="form-control" placeholder="A" ng-model="search.arrive"/>	
+							<input type="text" class="form-control" placeholder="A" ng-model="arrive"/>	
 						</div>
 						<div class="item">
-							<input type="text" class="form-control" placeholder="jj/mm/aaaa" ng-model="search.date"/>	
+							<input type="text" class="form-control" placeholder="jj/mm/aaaa" ng-model="date"/>	
 						</div>
 					</div>
 					<div class="col">
@@ -59,25 +60,30 @@
 						<p class="text-center">20 millions de membres avec profil vérifié pour voyager en toute sérénité </p>
 					</div>
 				</div>				
-				<div class="row responsive-sm" ng-if="search.showResult">
-					<ul class="list-group margin">
-						<li class="list-group-item transparent" ng-repeat="trajet in search.trajetCherche">
-							<div class="row">
-								<div class="col-sm-4">
-									<label >Depart : {{trajet.depart}}</label>
+				<ion-list>
+					<ion-item ng-repeat="trajet in trajetCherche"> 
+						<div class="item">
+							<div class="row row-center">
+								<div class="col">
+									<label >Depart : {{trajet.depart}}<br/>Arrive : {{trajet.arrive}}<br/>Date : {{trajet.date}}</label>
 								</div>
-								<div class="col-sm-4">
-									<label >Arrive : {{trajet.arrive}}</label>
-								</div>
-								<div class="col-sm-4">
-									<label >Date : {{trajet.date}}</label>
+								<div class="col"></div>
+								<div class="col"></div>
+								<div class="col">
+									<label class="toggle toggle-balanced">
+										<input type="checkbox">
+										<div class="track">
+											<div class="handle"></div>
+										</div>
+									</label>
 								</div>
 							</div>
-						</li>
-					</ul>
-				</div>
-				<div class="row responsive-sm">
-					<div class="col">
+						</div>
+						
+					</ion-item>
+				</ion-list>
+				<div class="list" ng-if="showAvis">
+					<div class="item item-avatar">
 						<img src="img/femme.png" class="img-circle center-block" width="150" height="150"/>
 						<div>
 							<label>Avis laissé à Florent S</label>
@@ -87,8 +93,7 @@
 							<label>Corinne C</label>
 						</div>
 					</div>
-					<div class="col"></div>
-					<div class="col">
+					<div class="item item-avatar">
 						<img src="img/homme.png" class="img-circle center-block" width="150" height="150"/>
 						<div>
 							<label>Avis laissé à Patricia B</label>
@@ -98,8 +103,7 @@
 							<label>Dominique S</label>
 						</div>
 					</div>
-					<div class="col"></div>
-					<div class="col">
+					<div class="item item-avatar">
 						<img src="img/femme2.png" class="img-circle center-block" width="150" height="150"/>
 						<div>
 							<label>Avis laissé à William L</label>
@@ -117,13 +121,21 @@
 		<!-- Left menu -->
 		<ion-side-menu side="left">
 		
-			<ion-header-bar class="bar-dark">
-			  <h1 class="title">Projects</h1>
-			  <button class="button button-icon ion-plus">
-			  </button>
+			<ion-header-bar class="bar-balanced">
+			  <h1 class="title">Menu</h1>
 			</ion-header-bar>
-		</ion-side-menu>
-  
+		
+			<ion-content>
+				<div class="list">
+					<div class="item">
+						<button class="button button-clear button-balanced">
+							Ajouter un trajet
+						</button>
+					</div>
+				</div>
+			</ion-content>
+		
+		</ion-side-menu>  
 	</ion-side-menus>
 		
   </body>
