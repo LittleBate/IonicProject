@@ -66,9 +66,18 @@ angular.module('BlaBlaCar').controller("BlaBlaCtrl", function ($scope, $ionicMod
         viewModel.ajoutTrajetValide = true;
     }
     
-    viewModel.reserver = function(trajetId)
+    /*
+        Ajoute l'utilisateur courant dans la liste des passagers du trajet.
+    */
+    viewModel.reserver = function(trajet)
     {
-        
+        userId = 0;
+        if(viewModel.currentUser !=null)
+        {
+            userId = viewModel.currentUser.id;
+        }
+        trajet.passagers.push(userId);
+        trajet.nbPlacesPrises++;
     }
     
     /*
