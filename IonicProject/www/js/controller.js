@@ -4,21 +4,76 @@ angular.module('BlaBlaCar').controller("BlaBlaCtrl", function ($scope, $ionicMod
 
     viewModel.title = "BlaBlaCar";
 
-	viewModel.toggleLeft = function() {
-		$ionicSideMenuDelegate.toggleLeft();
-	};
-
 	viewModel.showResult = false;
 	
 	viewModel.showAvis = true;
+    
+    viewModel.ajoutTrajetValide = false;
 
 	viewModel.depart = "";
 
 	viewModel.arrive = "";
 
 	viewModel.date = "";
-
     
+    viewModel.newTrajetDepart = "";
+    
+    viewModel.newTrajetArrive = "";
+    
+    viewModel.newTrajetDate = "";
+    
+    viewModel.newTrajetNbPlaces = 0;
+
+    /*
+        Utilisateur connecté.
+    */
+    viewModel.currentUser = null;
+    
+    /*
+        Id du dernier trajet ajouté.
+    */
+    viewModel.lastTrajetId = 15;
+    
+    /*
+        Ajoute un nouveau trajet à partir des données saisie.
+    */
+    viewModel.addTrajet = function()
+    {
+        id = 0;
+        if(viewModel.currentUser != null)
+        {
+            id = viewModel.currentUser.id;
+        }
+        if(viewModel.newTrajetNbPlaces < 0) 
+        {
+            viewModel.newTrajetNbPlaces = 0;
+        }
+        viewModel.lastTrajetId ++;
+        viewModel.trajets.push({
+            id:viewModel.lastTrajetId,
+			chauffeur: id,
+			nbPlaces: viewModel.newTrajetNbPlaces,
+            nbPlacesPrises: 0,
+            passagers : [],
+			depart: viewModel.newTrajetDepart,
+			arrive: viewModel.newTrajetArrive,
+			date: viewModel.newTrajetDate
+        });
+        viewModel.newTrajetArrive = "";
+        viewModel.newTrajetDate = "";
+        viewModel.newTrajetDepart = "";
+        viewModel.newTrajetNbPlaces = 0;
+        viewModel.ajoutTrajetValide = true;
+    }
+    
+    viewModel.reserver = function(trajetId)
+    {
+        
+    }
+    
+    /*
+        Lance une recherche en fonction des valeurs saisie par l'utilisateur.
+    */
 	viewModel.search = function()
 	{
 		viewModel.trajetCherche = [];
@@ -44,7 +99,7 @@ angular.module('BlaBlaCar').controller("BlaBlaCtrl", function ($scope, $ionicMod
                 departOk = false;
             }
 
-            if(departOk && arriveOk && dateOk)
+            if(departOk && arriveOk && dateOk && viewModel.trajets[i].nbPlacesPrises < viewModel.trajets[i].nbPlaces)
 			{
 				viewModel.trajetCherche.push(viewModel.trajets[i]);
             }
@@ -53,6 +108,9 @@ angular.module('BlaBlaCar').controller("BlaBlaCtrl", function ($scope, $ionicMod
 		viewModel.showAvis = false;
 	}
 
+    /*
+        Restaure les variables dans leur état initial
+    */
 	viewModel.clear = function()
 	{
 		viewModel.trajetCherche = [];
@@ -62,15 +120,109 @@ angular.module('BlaBlaCar').controller("BlaBlaCtrl", function ($scope, $ionicMod
 		viewModel.depart = "";
 		viewModel.date = "";
 	}
+
+    /*
+        Obtient l'utilisateur en fonction de l'id donné.
+        Retourne null si l'utilisateur n'est pas trouvé.
+    */
+	viewModel.getUserById = function(id)
+	{
+	    for(var user in viewModel.utilisateurs)
+	    {
+	        if(user.id == id)
+	        {
+	            return user;
+	        }
+	    }
+	    return null;
+	}
+    
+    /*
+        Obtient le trajet qui correspond à l'id donné en paramètre
+    */
+    viewModel.getTrajetById = function(id)
+    {
+        for(i = 0; i<viewModel.trajets.length; i++)
+        {
+            if(viewModel.trajets[i].id == id)
+            {
+                return viewModel.trajets[i];
+            }
+        }
+        return null;
+    }
+
+    /*
+        Ajoute l'utilisateur à la liste des passagers du trajet
+    */
+	viewModel.addUtilisateurToTrajet = function(trajet, user)
+	{
+	    traget.passagers.push(user.id);
+	}
+
+    /*
+        Supprime l'utilisateur à la liste des passagers du trajet donné.
+    */
+	viewModel.removeUtilisateurFromTrajet = function(trajet, user)
+	{
+        trajet.passagers
+	}
+    
+    /*
+        Obtient l'index de l'objet dans la liste.
+        retourne -1 si la valeur n'est pas trouvé dans la liste.
+    */
+    viewModel.getIndex = function(list, value)
+    {
+        for(i = 0; i < list.length; i++)
+        {
+            if(list[i] == value)
+            {
+                return i;
+            }
+        }
+        return 0;
+    }
 	
+    /*
+        Liste des trajets correspondant à la recherche de l'utilisateur.
+    */
 	viewModel.trajetCherche = [];
+
+    /*
+        Liste des utilisateurs de l'application.
+    */
+	viewModel.utilisateurs = [
+        {
+            id: '0',
+            nom : "Paul",
+            login:"pa",
+            mdp:"pa"
+        },
+        {
+            id: '1',
+            nom : "Jean",
+            login:"je",
+            mdp:"je"
+        },
+        {
+            id: '2',
+            nom : "Pierre",
+            login:"pi",
+            mdp:"pi"
+        }
+	]
 	
+    /*
+        Liste de l'ensemble de trajets enregistrés dans l'application.
+    */
 	viewModel.trajets = [
 		{
 			id:'1',
 			chauffeur: "",
-			nbPlaces: 1,
-            nbPlacesPrises: 1,
+			nbPlaces: 4,
+            nbPlacesPrises: 0,
+            passagers : [],
 			depart: 'Clermont-Ferrand',
 			arrive: 'Rive de gier',
 			date: '24/05/2015'
@@ -78,8 +230,9 @@ angular.module('BlaBlaCar').controller("BlaBlaCtrl", function ($scope, $ionicMod
 		{
 			id:'2',
 			chauffeur: "",
-			nbPlaces: 1,
-            nbPlacesPrises: 1,
+			nbPlaces: 3,
+            nbPlacesPrises: 0,
+            passagers : [],
 			depart: 'Clermont-Ferrand',
 			arrive: 'Rive de gier',
 			date: '25/05/2015'
@@ -88,7 +241,8 @@ angular.module('BlaBlaCar').controller("BlaBlaCtrl", function ($scope, $ionicMod
 			id:'3',
 			chauffeur: "",
 			nbPlaces: 1,
-            nbPlacesPrises: 1,
+            nbPlacesPrises: 0,
+            passagers : [],
 			depart: 'Clermont-Ferrand',
 			arrive: 'St Chamond',
 			date: '24/05/2015'
@@ -97,7 +251,8 @@ angular.module('BlaBlaCar').controller("BlaBlaCtrl", function ($scope, $ionicMod
 			id:'4',
 			chauffeur: "",
 			nbPlaces: 1,
-            nbPlacesPrises: 1,
+            nbPlacesPrises: 0,
+            passagers : [],
 			depart: 'Clermont-Ferrand',
 			arrive: 'St Etienne',
 			date: '25/05/2015'
@@ -105,8 +260,9 @@ angular.module('BlaBlaCar').controller("BlaBlaCtrl", function ($scope, $ionicMod
 		{
 			id:'5',
 			chauffeur: "",
-			nbPlaces: 1,
-            nbPlacesPrises: 1,
+			nbPlaces: 4,
+            nbPlacesPrises: 0,
+            passagers : [],
 			depart: 'Rive de gier',
 			arrive: 'Clermont-Ferrand',
 			date: '27/05/2015'
@@ -114,8 +270,9 @@ angular.module('BlaBlaCar').controller("BlaBlaCtrl", function ($scope, $ionicMod
 		{
 			id:'6',
 			chauffeur: "",
-			nbPlaces: 1,
-            nbPlacesPrises: 1,
+			nbPlaces: 3,
+            nbPlacesPrises: 0,
+            passagers : [],
 			depart: 'St Chamond',
 			arrive: 'Rive de gier',
 			date: '25/05/2015'
@@ -123,8 +280,9 @@ angular.module('BlaBlaCar').controller("BlaBlaCtrl", function ($scope, $ionicMod
 		{
 			id:'7',
 			chauffeur: "",
-			nbPlaces: 1,
-            nbPlacesPrises: 1,
+			nbPlaces: 4,
+            nbPlacesPrises: 0,
+            passagers : [],
 			depart: 'St Etienne',
 			arrive: 'St Chamond',
 			date: '24/05/2015'
@@ -132,8 +290,9 @@ angular.module('BlaBlaCar').controller("BlaBlaCtrl", function ($scope, $ionicMod
 		{
 			id:'8',
 			chauffeur: "",
-			nbPlaces: 1,
-            nbPlacesPrises: 1,
+			nbPlaces: 2,
+            nbPlacesPrises: 0,
+            passagers : [],
 			depart: 'St Etienne',
 			arrive: 'Clermont-Ferrans',
 			date: '24/05/2015'
@@ -141,8 +300,9 @@ angular.module('BlaBlaCar').controller("BlaBlaCtrl", function ($scope, $ionicMod
 		{
 			id:'9',
 			chauffeur: "",
-			nbPlaces: 1,
-            nbPlacesPrises: 1,
+			nbPlaces: 3,
+            nbPlacesPrises: 0,
+            passagers : [],
 			depart: 'St Etienne',
 			arrive: 'Rive de gier',
 			date: '24/05/2015'
@@ -150,8 +310,9 @@ angular.module('BlaBlaCar').controller("BlaBlaCtrl", function ($scope, $ionicMod
 		{
 			id:'10',
 			chauffeur: "",
-			nbPlaces: 1,
-            nbPlacesPrises: 1,
+			nbPlaces: 4,
+            nbPlacesPrises: 0,
+            passagers : [],
 			depart: 'St Etienne',
 			arrive: 'Rive de gier',
 			date: '27/05/2015'
@@ -159,8 +320,9 @@ angular.module('BlaBlaCar').controller("BlaBlaCtrl", function ($scope, $ionicMod
 		{
 			id:'11',
 			chauffeur: "",
-			nbPlaces: 1,
-            nbPlacesPrises: 1,
+			nbPlaces: 2,
+            nbPlacesPrises: 0,
+            passagers : [],
 			depart: 'St Etienne',
 			arrive: 'Rive de gier',
 			date: '26/05/2015'
@@ -169,7 +331,8 @@ angular.module('BlaBlaCar').controller("BlaBlaCtrl", function ($scope, $ionicMod
 			id:'12',
 			chauffeur: "",
 			nbPlaces: 1,
-            nbPlacesPrises: 1,
+            nbPlacesPrises: 0,
+            passagers : [],
 			depart: 'St Chamond',
 			arrive: 'Clermont-Ferrand',
 			date: '27/05/2015'
@@ -177,8 +340,9 @@ angular.module('BlaBlaCar').controller("BlaBlaCtrl", function ($scope, $ionicMod
 		{
 			id:'13',
 			chauffeur: "",
-			nbPlaces: 1,
-            nbPlacesPrises: 1,
+			nbPlaces: 2,
+            nbPlacesPrises: 0,
+            passagers : [],
 			depart: 'St Etienne',
 			arrive: 'Clermont-Ferrand',
 			date: '26/05/2015'
@@ -187,7 +351,8 @@ angular.module('BlaBlaCar').controller("BlaBlaCtrl", function ($scope, $ionicMod
 			id:'14',
 			chauffeur: "",
 			nbPlaces: 1,
-            nbPlacesPrises: 1,
+            nbPlacesPrises: 0,
+            passagers : [],
 			depart: 'Rive de gier',
 			arrive: 'St Etienne',
 			date: '24/05/2015'
@@ -196,7 +361,8 @@ angular.module('BlaBlaCar').controller("BlaBlaCtrl", function ($scope, $ionicMod
 			id:'15',
 			chauffeur: "",
 			nbPlaces: 1,
-            nbPlacesPrises: 1,
+            nbPlacesPrises: 0,
+            passagers : [],
 			depart: 'Rive de gier',
 			arrive: 'St Chamond',
 			date: '27/05/2015'

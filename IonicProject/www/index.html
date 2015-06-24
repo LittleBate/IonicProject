@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
@@ -24,120 +24,194 @@
     <script src="js/controller.js"></script>
   </head>
   <body ng-app="BlaBlaCar" ng-controller="BlaBlaCtrl as ctrl">
-	<ion-side-menus>
-		<!-- Center content -->
-		<ion-side-menu-content >
-			<ion-header-bar class="bar-balanced">
-				<button class="button button-icon" ng-click="ctrl.toggleLeft()">
-					<i class="icon ion-navicon"></i>
-				</button>
-				<h1 class="title">Trouvez votre covoiturage</h1>
-			</ion-header-bar>
-			<ion-content>	
-			<div class="container">
-				<div class="row responsive-sm">
-					<div class="col list">
-						<div class="item">
-							<input type="text" class="form-control" placeholder="De" ng-model="ctrl.depart"/>	
-						</div>
-						<div class="item">
-							<input type="text" class="form-control" placeholder="A" ng-model="ctrl.arrive"/>	
-						</div>
-						<div class="item">
-							<input type="text" class="form-control" placeholder="jj/mm/aaaa" ng-model="ctrl.date"/>	
-						</div>
-					</div>
-					<div class="col">
-						<button class="button button-icon" ng-click="ctrl.search()">
-							<i class="icon ion-search"></i>
-						</button>
-						<button class="button button-icon" ng-click="ctrl.clear()">
-							<i class="icon ion-close-circled"></i>
-						</button>
-					</div>
-				</div>				
-				<div class="row responsive-sm">
-					<div class="col">
-						<p class="text-center">20 millions de membres avec profil v�rifi� pour voyager en toute s�r�nit� </p>
-					</div>
-				</div>				
-				<ion-list>
-					<ion-item ng-repeat="trajet in ctrl.trajetCherche"> 
-						<div class="item">
-							<div class="row row-center">
-								<div class="col">
-									<label >Depart : {{trajet.depart}}<br/>Arrive : {{trajet.arrive}}<br/>Date : {{trajet.date}}</label>
-								</div>
-								<div class="col"></div>
-								<div class="col"></div>
-								<div class="col">
-									<label class="toggle toggle-balanced">
-										<input type="checkbox">
-										<div class="track">
-											<div class="handle"></div>
-										</div>
-									</label>
-								</div>
-							</div>
-						</div>
-						
-					</ion-item>
-				</ion-list>
-				<div class="list" ng-if="ctrl.showAvis">
-					<div class="item item-avatar">
-						<img src="img/femme.png" class="img-circle center-block" width="150" height="150"/>
-						<div>
-							<label>Avis laiss� � Florent S</label>
-							<p>
-							"Trajet tr�s agr�able, rapide et tr�s sympa. Vous pouvez lui faire confiance, n'h�sitez pas � covoiturer avec Florent."
-							</p>
-							<label>Corinne C</label>
-						</div>
-					</div>
-					<div class="item item-avatar">
-						<img src="img/homme.png" class="img-circle center-block" width="150" height="150"/>
-						<div>
-							<label>Avis laiss� � Patricia B</label>
-							<p>
-							"Passagers ponctuels et tr�s sympathiques. Le voyage Lyon-Paris est pass� tr�s vite."
-							</p>
-							<label>Dominique S</label>
-						</div>
-					</div>
-					<div class="item item-avatar">
-						<img src="img/femme2.png" class="img-circle center-block" width="150" height="150"/>
-						<div>
-							<label>Avis laiss� � William L</label>
-							<p>
-							"Excellent trajet avec William, tr�s convivial et ponctuel !"
-							</p>
-							<label>Marion C</label>
-						</div>
-					</div>
-				</div>
-			</div>
-			</ion-content>
-		</ion-side-menu-content>
 
-		<!-- Left menu -->
-		<ion-side-menu side="left">
-		
-			<ion-header-bar class="bar-balanced">
-			  <h1 class="title">Menu</h1>
-			</ion-header-bar>
-		
-			<ion-content>
-				<div class="list">
-					<div class="item">
-						<button class="button button-clear button-balanced">
-							Ajouter un trajet
-						</button>
-					</div>
-				</div>
-			</ion-content>
-		
-		</ion-side-menu>  
-	</ion-side-menus>
-		
+      <script id="connect.html" type="text/ng-template">
+
+          <div class="modal">
+
+              <!-- Modal header bar -->
+              <ion-header-bar class="bar-secondary">
+              </ion-header-bar>
+
+              <!-- Modal content area -->
+              <ion-content>
+
+              </ion-content>
+          </div>
+      </script>
+
+
+
+      <ion-tabs class="tabs-energized tabs-icon-only">
+
+          <!-- Tab home permettant la recherche -->
+
+          <ion-tab title="Recherche" icon-on="ion-android-home" icon-off="ion-android-home">
+              <ion-header-bar class="bar-energized bar-header bar-light">
+                  <h1 class="title">Trouvez votre covoiturage</h1>
+              </ion-header-bar>
+              <ion-content class="backgrounded">
+                  <div class="container">
+                      <div class="row responsive-sm">
+                          <div class="col list">
+                              <div class="item">
+                                  <input type="text" class="form-control" placeholder="De" ng-model="ctrl.depart" />
+                              </div>
+                              <div class="item">
+                                  <input type="text" class="form-control" placeholder="A" ng-model="ctrl.arrive" />
+                              </div>
+                              <div class="item">
+                                  <input type="text" class="form-control" placeholder="jj/mm/aaaa" ng-model="ctrl.date" />
+                              </div>
+                          </div>
+                          <div class="col">
+                              <button class="button button-icon" ng-click="ctrl.search()">
+                                  <i class="icon ion-search"></i>
+                              </button>
+                              <button class="button button-icon" ng-click="ctrl.clear()">
+                                  <i class="icon ion-close-circled"></i>
+                              </button>
+                          </div>
+                      </div>
+                      <div class="row responsive-sm">
+                          <div class="col">
+                              <p class="text-center">20 millions de membres avec profil v�rifi� pour voyager en toute s�r�nit� </p>
+                          </div>
+                      </div>
+                      <ion-list>
+                          <ion-item ng-repeat="trajet in ctrl.trajetCherche">
+                              <div class="item">
+                                  <div class="row row-center">
+                                      <div class="col">
+                                          <label>Depart : {{trajet.depart}}<br />Arrive : {{trajet.arrive}}<br />Date : {{trajet.date}}
+                                          <br />Places : {{trajet.nbPlaces}} / {{trajet.nbPlacesPrises}}</label>
+                                      </div>
+                                      <div class="col"></div>
+                                      <div class="col"></div>
+                                      <div class="col">
+                                          <button class="button button-energized"
+                                                  ng-click="ctrl.reserver({{trajet.id}})">Réserver</button>
+                                      </div>
+                                  </div>
+                              </div>
+
+                          </ion-item>
+                      </ion-list>
+                      <div class="list" ng-if="ctrl.showAvis">
+                          <div class="item item-avatar">
+                              <img src="img/femme.png" class="img-circle center-block" width="150" height="150" />
+                              <div>
+                                  <label>Avis laiss� � Florent S</label>
+                                  <p>
+                                      "Trajet tr�s agr�able, rapide et tr�s sympa. Vous pouvez lui faire confiance, n'h�sitez pas � covoiturer avec Florent."
+                                  </p>
+                                  <label>Corinne C</label>
+                              </div>
+                          </div>
+                          <div class="item item-avatar">
+                              <img src="img/homme.png" class="img-circle center-block" width="150" height="150" />
+                              <div>
+                                  <label>Avis laiss� � Patricia B</label>
+                                  <p>
+                                      "Passagers ponctuels et tr�s sympathiques. Le voyage Lyon-Paris est pass� tr�s vite."
+                                  </p>
+                                  <label>Dominique S</label>
+                              </div>
+                          </div>
+                          <div class="item item-avatar">
+                              <img src="img/femme2.png" class="img-circle center-block" width="150" height="150" />
+                              <div>
+                                  <label>Avis laiss� � William L</label>
+                                  <p>
+                                      "Excellent trajet avec William, tr�s convivial et ponctuel !"
+                                  </p>
+                                  <label>Marion C</label>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </ion-content>
+          </ion-tab>
+
+          <!-- Tab de création d'un nouveau trajet -->
+
+          <ion-tab title="Proposez un trajet" icon-on="ion-android-add" icon-off="ion-android-add">
+              <ion-header-bar class="bar-energized bar-header bar-light">
+                  <h1 class="title">Proposez un trajet</h1>
+              </ion-header-bar>
+              <ion-content class="backgrounded">
+                  <div class="list">
+                      <label class="item item-input">
+                          <input type="text" placeholder="Depart" ng-model="ctrl.newTrajetDepart">
+                      </label>
+                      <label class="item item-input">
+                          <input type="text" placeholder="Arrivé" ng-model="ctrl.newTrajetArrive">
+                      </label>
+                      <label class="item item-input">
+                          <input type="text" placeholder="jj/mm/aaaa" ng-model="ctrl.newTrajetDate">
+                      </label>
+                      <label class="item item-input">
+                          <input type="number" placeholder="Nombre de places" ng-model="ctrl.newTrajetNbPlaces">
+                      </label>
+                  </div>
+                  <div class="row responsive-sm">
+                      <button class="button button-energized" ng-click="ctrl.addTrajet()">Ajouter</button>
+                  </div>
+                  <div class="row responsive-sm" ng-if="ctrl.ajoutTrajetValide">
+                      <a class="item item-icon-left balanced" href="#">
+                          <i class="icon ion-android-done"></i>
+                          Trajet enregistré
+                      </a>
+                  </div>
+              </ion-content>
+          </ion-tab>
+
+          <!-- Tab affichant les trajets proposés par l'utilisateur et les trajets qu'il à réservé -->
+
+          <ion-tab title="Mes trajets" icon-on="ion-android-car" icon-off="ion-android-car">
+              <ion-header-bar class="bar-energized bar-header bar-light">
+                  <h1 class="title">Mes trajets</h1>
+              </ion-header-bar>
+              <ion-content class="backgrounded">
+                  <div class="container">
+                  </div>
+              </ion-content>
+          </ion-tab>
+
+          <!-- Tab affichant le profil de l'utilisateur connecté -->
+
+          <ion-tab title="Mon profil" icon-on="ion-android-person" icon-off="ion-android-person">
+              <ion-header-bar class="bar-energized bar-header bar-light">
+                  <h1 class="title">Mon profil</h1>
+              </ion-header-bar>
+              <ion-content class="backgrounded">
+                  <div class="container">
+                      <div class="row responsive-sm">
+                          <img class="full-image" src=""/>
+                      </div>
+                      <div class="row responsive-sm list">
+                          <label class="item item-input">
+                              <input type="text" placeholder="Nom">
+                          </label>
+                          <label class="item item-input">
+                              <input type="text" placeholder="Login">
+                          </label>
+                          <label class="item item-input">
+                              <input type="text" placeholder="Mot de passe">
+                          </label>
+                      </div>
+                      <div class="row responsive-sm">
+                          <button class="button button-energized">Ajouter</button>
+                      </div>
+                      <div class="row responsive-sm">
+                          <a class="item item-icon-left balanced" href="#">
+                              <i class="icon ion-android-done"></i>
+                              Trajet enregistré
+                          </a>
+                      </div>
+                  </div>
+              </ion-content>
+          </ion-tab>
+
   </body>
 </html>
