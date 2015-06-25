@@ -61,15 +61,15 @@
                                   <input type="text" class="form-control" placeholder="A" ng-model="ctrl.arrive" />
                               </div>
                               <div class="item">
-                                  <input type="text" class="form-control" placeholder="jj/mm/aaaa" ng-model="ctrl.date" />
+                                  <input type="date" class="form-control" placeholder="jj/mm/aaaa" ng-model="ctrl.date" />
                               </div>
                           </div>
-                          <div class="col">
-                              <button class="button button-icon" ng-click="ctrl.search()">
-                                  <i class="icon ion-search"></i>
+                          <div class="col">                              
+                              <button class="button icon-left icon ion-search button-energized" ng-click="ctrl.search()">
+                                  Rechercher
                               </button>
-                              <button class="button button-icon" ng-click="ctrl.clear()">
-                                  <i class="icon ion-close-circled"></i>
+                              <button class="button icon-left icon ion-close-circled button-energized" ng-click="ctrl.clear()">
+                                  Clear
                               </button>
                           </div>
                       </div>
@@ -158,9 +158,7 @@
                           <input type="number" placeholder="Nombre de places" ng-model="ctrl.newTrajetNbPlaces">
                       </label>
                   </div>
-                  <div class="row responsive-sm">
-                      <button class="button button-energized" ng-click="ctrl.addTrajet()">Ajouter</button>
-                  </div>
+                  <button class="button button-full button-energized" ng-click="ctrl.addTrajet()">Ajouter</button>
                   <div class="row responsive-sm" ng-if="ctrl.ajoutTrajetValide">
                       <a class="item item-icon-left balanced" href="#">
                           <i class="icon ion-android-done"></i>
@@ -178,6 +176,62 @@
               </ion-header-bar>
               <ion-content class="backgrounded">
                   <div class="container">
+                      <div class="row responsive-sm">
+                          <label>Mes trajets</label>
+                      </div>
+                      <div class="row responsive-sm">
+                          <ion-list> 
+                              <ion-item ng-repeat="trajet in ctrl.trajetsUtilisateur">
+                                  <div class="item">
+                                      <div class="row row-center">
+                                          <div class="col">
+                                              <label>
+                                                  Depart : {{trajet.depart}}
+                                                  <br />Arrive : {{trajet.arrive}}
+                                                  <br />Date : {{trajet.date}}
+                                                  <br />Places : {{trajet.nbPlacesPrises}} / {{trajet.nbPlaces}}
+                                              </label>
+                                          </div>
+                                          <div class="col"></div>
+                                          <div class="col"></div>
+                                          <div class="col">
+                                              <button class="button button-assertive"
+                                                      ng-click="ctrl.supprimer(trajet)">Supprimer</button>
+                                          </div>
+                                      </div>
+                                  </div>
+
+                              </ion-item>
+                          </ion-list>
+                      </div>
+                      <div class="row responsive-sm">
+                          <label>Mes reservations</label>
+                      </div>
+                      <div class="row responsive-sm">
+                          <ion-list>
+                               <ion-item ng-repeat="trajet in ctrl.reservations">
+                                  <div class="item">
+                                      <div class="row row-center">
+                                          <div class="col">
+                                              <label>
+                                                  Depart : {{trajet.depart}}
+                                                  <br />Arrive : {{trajet.arrive}}
+                                                  <br />Date : {{trajet.date}}
+                                                  <br />Places : {{trajet.nbPlacesPrises}} / {{trajet.nbPlaces}}
+                                              </label>
+                                          </div>
+                                          <div class="col"></div>
+                                          <div class="col"></div>
+                                          <div class="col">
+                                              <button class="button button-stable"
+                                                      ng-click="ctrl.AnnulerReservation(trajet)">Annuler</button>
+                                          </div>
+                                      </div>
+                                  </div>
+
+                              </ion-item>
+                          </ion-list>
+                      </div>
                   </div>
               </ion-content>
           </ion-tab>
@@ -190,29 +244,33 @@
               </ion-header-bar>
               <ion-content class="backgrounded">
                   <div class="container">
-                      <div class="row responsive-sm">
-                          <img class="full-image" src=""/>
+                      <div ng-if="ctrl.connected">
+                          <div class="row responsive-sm">
+                              <img class="full-image" src=""/>
+                          </div>
+                          <div class="row responsive-sm list">
+                              <label class="item item-input">
+                                  {{ctrl.currentUser.nom}}
+                              </label>
+                              <label class="item item-input">
+                                  {{ctrl.currentUser.login}}
+                              </label>
+                              <label class="item item-input">
+                                  {{ctrl.currentUser.mdp}}
+                              </label>
+                          </div>
                       </div>
-                      <div class="row responsive-sm list">
-                          <label class="item item-input">
-                              <input type="text" placeholder="Nom">
-                          </label>
-                          <label class="item item-input">
-                              <input type="text" placeholder="Login">
-                          </label>
-                          <label class="item item-input">
-                              <input type="text" placeholder="Mot de passe">
-                          </label>
-                      </div>
-                      <div class="row responsive-sm">
-                          <button class="button button-energized">Ajouter</button>
-                      </div>
-                      <div class="row responsive-sm">
-                          <a class="item item-icon-left balanced" href="#">
-                              <i class="icon ion-android-done"></i>
-                              Trajet enregistré
-                          </a>
-                      </div>
+                      <div ng-if="!ctrl.connected">
+                           <div class="list list-inset">
+                              <label class="item item-input">
+                                  <input type="text" placeholder="Username" ng-model="ctrl.login">
+                              </label>
+                              <label class="item item-input">
+                                  <input type="password" placeholder="Password" ng-model="ctrl.mdp">
+                              </label>
+                          </div>
+                          <button class="button button-full button-energized" ng-click="ctrl.connect()">Login</button>
+                       </div>                      
                   </div>
               </ion-content>
           </ion-tab>

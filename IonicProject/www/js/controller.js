@@ -24,6 +24,41 @@ angular.module('BlaBlaCar').controller("BlaBlaCtrl", function ($scope, $ionicMod
     
     viewModel.newTrajetNbPlaces = 0;
 
+    viewModel.connected = false;
+    
+    viewModel.login = "";
+    
+    viewModel.mdp = "";
+    
+    /*
+        Connecte l'utilisateur à partir du login et du mdp saisie 
+    */
+    viewModel.connect = function()
+    {
+        index = viewModel.getIndex(viewModel.getListLogin(), viewModel.login)
+        user = viewModel.utilisateurs[index];
+        if(user.mdp == viewModel.mdp)
+        {
+            viewModel.currentUser = user;
+            viewModel.connected = true;
+        }
+        viewModel.login = "";
+        viewModel.mdp = "";
+    }
+        
+    /*
+        Obtient la liste des logins des utilisateurs de l'application
+    */
+    viewModel.getListLogin = function()
+    {
+        listLogin = [];
+        for(i = 0; i<viewModel.utilisateurs.length; i++)
+        {
+            listLogin.push(viewModel.utilisateurs[i].login);
+        }
+        return listLogin;
+    }
+    
     /*
         Utilisateur connecté.
     */
@@ -64,7 +99,7 @@ angular.module('BlaBlaCar').controller("BlaBlaCtrl", function ($scope, $ionicMod
             viewModel.newTrajetNbPlaces = 0;
         }
         viewModel.lastTrajetId ++;
-        viewModel.trajets.push({
+        trajet = {
             id:viewModel.lastTrajetId,
 			chauffeur: id,
 			nbPlaces: viewModel.newTrajetNbPlaces,
@@ -73,7 +108,9 @@ angular.module('BlaBlaCar').controller("BlaBlaCtrl", function ($scope, $ionicMod
 			depart: viewModel.newTrajetDepart,
 			arrive: viewModel.newTrajetArrive,
 			date: viewModel.newTrajetDate
-        });
+        };
+        viewModel.trajets.push(trajet);
+        viewModel.trajetsUtilisateur.push(trajet);
         viewModel.newTrajetArrive = "";
         viewModel.newTrajetDate = "";
         viewModel.newTrajetDepart = "";
@@ -98,6 +135,18 @@ angular.module('BlaBlaCar').controller("BlaBlaCtrl", function ($scope, $ionicMod
     }
     
     /*
+        Annule la réservation de l'utilisateur sur le trajet donné en paramètre
+    */
+    viewModel.AnnulerReservation = function(trajet)
+    {
+        index = viewModel.getIndex(trajet.passagers, viewModel.currentUser);
+        trajet.passagers.splice(index, 1);
+        viewModel.trajets.push(trajet);
+        index = viewModel.getIndex(viewModel.reservations, trajet);
+        viewModel.reservations.splice(index, 1);
+    }
+    
+    /*
         Ajoute l'utilisateur courant dans la liste des passagers du trajet.
     */
     viewModel.reserver = function(trajet)
@@ -111,6 +160,7 @@ angular.module('BlaBlaCar').controller("BlaBlaCtrl", function ($scope, $ionicMod
         trajet.nbPlacesPrises++;
         index = viewModel.getIndex(viewModel.trajetCherche, trajet);
         viewModel.trajetCherche.splice(index, 1);
+        viewModel.reservations.push(trajet);
     }
     
     /*
@@ -235,6 +285,16 @@ angular.module('BlaBlaCar').controller("BlaBlaCtrl", function ($scope, $ionicMod
         Liste des trajets correspondant à la recherche de l'utilisateur.
     */
 	viewModel.trajetCherche = [];
+    
+    /*
+        Liste des trajets créer par l'utilisateur
+    */
+    viewModel.trajetsUtilisateur = [];
+    
+    /*
+        Liste des trajets réservés par l'utilisateur
+    */
+    viewModel.reservations = [];
 
     /*
         Liste des utilisateurs de l'application.
