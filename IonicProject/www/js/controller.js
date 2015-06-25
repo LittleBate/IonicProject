@@ -45,6 +45,15 @@ angular.module('BlaBlaCar').controller("BlaBlaCtrl", function ($scope, $ionicMod
         viewModel.login = "";
         viewModel.mdp = "";
     }
+    
+    /*
+        Deconnect l'utilisateur
+    */
+    viewModel.disconnect = function()
+    {
+        viewModel.currentUser = null;
+        viewModel.connected = false;
+    }
         
     /*
         Obtient la liste des logins des utilisateurs de l'application
