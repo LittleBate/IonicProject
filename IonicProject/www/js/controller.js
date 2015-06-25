@@ -35,6 +35,21 @@ angular.module('BlaBlaCar').controller("BlaBlaCtrl", function ($scope, $ionicMod
     viewModel.lastTrajetId = 15;
     
     /*
+        Si l'utilisateur n'est pas connecté on lui propose de se connecter.
+        Si il se connecte ou est déjà connecté on retourne true.
+        False sinon
+    */
+    viewModel.isConnected = function()
+    {
+        if(viewModel.currentUser == null)
+        {
+            viewModel.currentUser = viewModel.utilisateurs[0];
+            return true;
+        }
+        return false;
+    }
+    
+    /*
         Ajoute un nouveau trajet à partir des données saisie.
     */
     viewModel.addTrajet = function()
@@ -67,6 +82,22 @@ angular.module('BlaBlaCar').controller("BlaBlaCtrl", function ($scope, $ionicMod
     }
     
     /*
+        Obtient un valeur (bool) qui definit si l'utilisateur courant à dejà reserve le trajet donné.
+    */
+    viewModel.dejaReserve = function(trajet)
+    {
+        dejaReserve = false;
+        for(i = 0; i < trajet.passagers.length; i++)
+        {
+            if(trajet.passagers[i] == viewModel.currentUser.id)
+            {
+                dejaReserve = true;
+            }
+        }
+        return dejaReserve;
+    }
+    
+    /*
         Ajoute l'utilisateur courant dans la liste des passagers du trajet.
     */
     viewModel.reserver = function(trajet)
@@ -78,6 +109,8 @@ angular.module('BlaBlaCar').controller("BlaBlaCtrl", function ($scope, $ionicMod
         }
         trajet.passagers.push(userId);
         trajet.nbPlacesPrises++;
+        index = viewModel.getIndex(viewModel.trajetCherche, trajet);
+        viewModel.trajetCherche.splice(index, 1);
     }
     
     /*
@@ -85,6 +118,10 @@ angular.module('BlaBlaCar').controller("BlaBlaCtrl", function ($scope, $ionicMod
     */
 	viewModel.search = function()
 	{
+        if(!viewModel.isConnected)
+        {
+            return;
+        }
 		viewModel.trajetCherche = [];
 		for(i = 0; i < viewModel.trajets.length; i++)
 		{
@@ -107,8 +144,9 @@ angular.module('BlaBlaCar').controller("BlaBlaCtrl", function ($scope, $ionicMod
             {
                 departOk = false;
             }
-
-            if(departOk && arriveOk && dateOk && viewModel.trajets[i].nbPlacesPrises < viewModel.trajets[i].nbPlaces)
+            
+            if(departOk && arriveOk && dateOk 
+               && viewModel.trajets[i].nbPlacesPrises < viewModel.trajets[i].nbPlaces)
 			{
 				viewModel.trajetCherche.push(viewModel.trajets[i]);
             }
@@ -190,7 +228,7 @@ angular.module('BlaBlaCar').controller("BlaBlaCtrl", function ($scope, $ionicMod
                 return i;
             }
         }
-        return 0;
+        return -1;
     }
 	
     /*
