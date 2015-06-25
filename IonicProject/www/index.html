@@ -140,101 +140,125 @@
 
           <!-- Tab de création d'un nouveau trajet -->
 
-          <ion-tab ng-if="ctrl.connected" title="Proposez un trajet" icon-on="ion-android-add" icon-off="ion-android-add">
+          <ion-tab title="Proposez un trajet" icon-on="ion-android-add" icon-off="ion-android-add">
               <ion-header-bar class="bar-energized bar-header bar-light">
                   <h1 class="title">Proposez un trajet</h1>
               </ion-header-bar>
               <ion-content class="backgrounded">
-                  <div class="list">
-                      <label class="item item-input">
-                          <input type="text" placeholder="Depart" ng-model="ctrl.newTrajetDepart">
-                      </label>
-                      <label class="item item-input">
-                          <input type="text" placeholder="Arrivé" ng-model="ctrl.newTrajetArrive">
-                      </label>
-                      <label class="item item-input">
-                          <input type="text" placeholder="jj/mm/aaaa" ng-model="ctrl.newTrajetDate">
-                      </label>
-                      <label class="item item-input">
-                          <input type="number" placeholder="Nombre de places" ng-model="ctrl.newTrajetNbPlaces">
-                      </label>
+                  <div ng-if="ctrl.connected">
+                      <div class="list">
+                          <label class="item item-input">
+                              <input type="text" placeholder="Depart" ng-model="ctrl.newTrajetDepart">
+                          </label>
+                          <label class="item item-input">
+                              <input type="text" placeholder="Arrivé" ng-model="ctrl.newTrajetArrive">
+                          </label>
+                          <label class="item item-input">
+                              <input type="text" placeholder="jj/mm/aaaa" ng-model="ctrl.newTrajetDate">
+                          </label>
+                          <label class="item item-input">
+                              <input type="number" placeholder="Nombre de places" ng-model="ctrl.newTrajetNbPlaces">
+                          </label>
+                      </div>
+                      <button class="button button-full button-energized" ng-click="ctrl.addTrajet()">Ajouter</button>
+                      <div class="row responsive-sm" ng-if="ctrl.ajoutTrajetValide">
+                          <a class="item item-icon-left balanced" href="#">
+                              <i class="icon ion-android-done"></i>
+                              Trajet enregistré
+                          </a>
+                      </div>
                   </div>
-                  <button class="button button-full button-energized" ng-click="ctrl.addTrajet()">Ajouter</button>
-                  <div class="row responsive-sm" ng-if="ctrl.ajoutTrajetValide">
-                      <a class="item item-icon-left balanced" href="#">
-                          <i class="icon ion-android-done"></i>
-                          Trajet enregistré
-                      </a>
-                  </div>
+                  <div ng-if="!ctrl.connected">
+                       <div class="list list-inset">
+                          <label class="item item-input">
+                              <input type="text" placeholder="Username" ng-model="ctrl.login">
+                          </label>
+                          <label class="item item-input">
+                              <input type="password" placeholder="Password" ng-model="ctrl.mdp">
+                          </label>
+                      </div>
+                      <button class="button button-full button-energized" ng-click="ctrl.connect()">Login</button>
+                   </div> 
               </ion-content>
           </ion-tab>
 
           <!-- Tab affichant les trajets proposés par l'utilisateur et les trajets qu'il à réservé -->
 
-          <ion-tab ng-if="ctrl.connected" title="Mes trajets" icon-on="ion-android-car" icon-off="ion-android-car">
+          <ion-tab title="Mes trajets" icon-on="ion-android-car" icon-off="ion-android-car">
               <ion-header-bar class="bar-energized bar-header bar-light">
                   <h1 class="title">Mes trajets</h1>
               </ion-header-bar>
               <ion-content class="backgrounded">
                   <div class="container">
-                      <div class="list">
-                      </div>
-                      <div class="item item-divider">
-                          <label>Mes trajets</label>
-                      </div>
-                      <div class="item">
-                          <ion-list> 
-                              <ion-item ng-repeat="trajet in ctrl.trajetsUtilisateur">
-                                  <div class="item">
-                                      <div class="row row-center">
-                                          <div class="col">
-                                              <label>
-                                                  Depart : {{trajet.depart}}
-                                                  <br />Arrive : {{trajet.arrive}}
-                                                  <br />Date : {{trajet.date}}
-                                                  <br />Places : {{trajet.nbPlacesPrises}} / {{trajet.nbPlaces}}
-                                              </label>
-                                          </div>
-                                          <div class="col"></div>
-                                          <div class="col"></div>
-                                          <div class="col">
-                                              <button class="button button-assertive"
-                                                      ng-click="ctrl.supprimer(trajet)">Supprimer</button>
-                                          </div>
-                                      </div>
-                                  </div>
-
-                              </ion-item>
-                          </ion-list>
-                      </div>
-                      <div class="item item-divider">
-                          <label>Mes reservations</label>
-                      </div>
-                      <div class="item">
-                          <ion-list>
-                               <ion-item ng-repeat="trajet in ctrl.reservations">
-                                  <div class="item">
-                                      <div class="row row-center">
-                                          <div class="col">
-                                              <label>
-                                                  Depart : {{trajet.depart}}
-                                                  <br />Arrive : {{trajet.arrive}}
-                                                  <br />Date : {{trajet.date}}
-                                                  <br />Places : {{trajet.nbPlacesPrises}} / {{trajet.nbPlaces}}
-                                              </label>
-                                          </div>
-                                          <div class="col"></div>
-                                          <div class="col"></div>
-                                          <div class="col">
-                                              <button class="button button-stable"
-                                                      ng-click="ctrl.AnnulerReservation(trajet)">Annuler</button>
+                      <div ng-if="ctrl.connected">
+                          <div class="item item-divider">
+                              <label>Mes trajets</label>
+                          </div>
+                          <div class="item">
+                              <ion-list> 
+                                  <ion-item ng-repeat="trajet in ctrl.trajetsUtilisateur">
+                                      <div class="item">
+                                          <div class="row row-center">
+                                              <div class="col">
+                                                  <label>
+                                                      Depart : {{trajet.depart}}
+                                                      <br />Arrive : {{trajet.arrive}}
+                                                      <br />Date : {{trajet.date}}
+                                                      <br />Places : {{trajet.nbPlacesPrises}} / {{trajet.nbPlaces}}
+                                                  </label>
+                                              </div>
+                                              <div class="col"></div>
+                                              <div class="col"></div>
+                                              <div class="col">
+                                                  <button class="button button-assertive"
+                                                          ng-click="ctrl.supprimer(trajet)">Supprimer</button>
+                                              </div>
                                           </div>
                                       </div>
-                                  </div>
 
-                              </ion-item>
-                          </ion-list>
-                      </div>
+                                  </ion-item>
+                              </ion-list>
+                          </div>
+                          <div class="item item-divider">
+                              <label>Mes reservations</label>
+                          </div>
+                          <div class="item">
+                              <ion-list>
+                                   <ion-item ng-repeat="trajet in ctrl.reservations">
+                                      <div class="item">
+                                          <div class="row row-center">
+                                              <div class="col">
+                                                  <label>
+                                                      Depart : {{trajet.depart}}
+                                                      <br />Arrive : {{trajet.arrive}}
+                                                      <br />Date : {{trajet.date}}
+                                                      <br />Places : {{trajet.nbPlacesPrises}} / {{trajet.nbPlaces}}
+                                                  </label>
+                                              </div>
+                                              <div class="col"></div>
+                                              <div class="col"></div>
+                                              <div class="col">
+                                                  <button class="button button-stable"
+                                                          ng-click="ctrl.AnnulerReservation(trajet)">Annuler</button>
+                                              </div>
+                                          </div>
+                                      </div>
+
+                                  </ion-item>
+                              </ion-list>
+                          </div>
+                       </div>
+                      <div ng-if="!ctrl.connected">
+                           <div class="list list-inset">
+                              <label class="item item-input">
+                                  <input type="text" placeholder="Username" ng-model="ctrl.login">
+                              </label>
+                              <label class="item item-input">
+                                  <input type="password" placeholder="Password" ng-model="ctrl.mdp">
+                              </label>
+                          </div>
+                          <button class="button button-full button-energized" ng-click="ctrl.connect()">Login</button>
+                       </div> 
                   </div>
               </ion-content>
           </ion-tab>
