@@ -94,6 +94,7 @@
                                       <div class="col"></div>
                                       <div class="col">
                                           <button class="button button-energized"
+                                                   ng-if="ctrl.connected"
                                                   ng-click="ctrl.reserver(trajet)">Réserver</button>
                                       </div>
                                   </div>
@@ -139,7 +140,7 @@
 
           <!-- Tab de création d'un nouveau trajet -->
 
-          <ion-tab title="Proposez un trajet" icon-on="ion-android-add" icon-off="ion-android-add">
+          <ion-tab ng-if="ctrl.connected" title="Proposez un trajet" icon-on="ion-android-add" icon-off="ion-android-add">
               <ion-header-bar class="bar-energized bar-header bar-light">
                   <h1 class="title">Proposez un trajet</h1>
               </ion-header-bar>
@@ -170,7 +171,7 @@
 
           <!-- Tab affichant les trajets proposés par l'utilisateur et les trajets qu'il à réservé -->
 
-          <ion-tab title="Mes trajets" icon-on="ion-android-car" icon-off="ion-android-car">
+          <ion-tab ng-if="ctrl.connected" title="Mes trajets" icon-on="ion-android-car" icon-off="ion-android-car">
               <ion-header-bar class="bar-energized bar-header bar-light">
                   <h1 class="title">Mes trajets</h1>
               </ion-header-bar>
