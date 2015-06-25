@@ -176,10 +176,12 @@
               </ion-header-bar>
               <ion-content class="backgrounded">
                   <div class="container">
-                      <div class="row responsive-sm">
+                      <div class="list">
+                      </div>
+                      <div class="item item-divider">
                           <label>Mes trajets</label>
                       </div>
-                      <div class="row responsive-sm">
+                      <div class="item">
                           <ion-list> 
                               <ion-item ng-repeat="trajet in ctrl.trajetsUtilisateur">
                                   <div class="item">
@@ -204,10 +206,10 @@
                               </ion-item>
                           </ion-list>
                       </div>
-                      <div class="row responsive-sm">
+                      <div class="item item-divider">
                           <label>Mes reservations</label>
                       </div>
-                      <div class="row responsive-sm">
+                      <div class="item">
                           <ion-list>
                                <ion-item ng-repeat="trajet in ctrl.reservations">
                                   <div class="item">
