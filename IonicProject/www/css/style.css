@@ -1,11 +1,10 @@
 /* Empty. Add your own CSS if you like */
-html
+.backgrounded
 {
-	background-image:url('img/bckg.jpg');
-	background-repeat:no-repeat;
-	background-attachment:fixed;
-	background-position:center;
+	background: url('../img/bckg.jpg') no-repeat center fixed;
+	background-size : cover;
 }
+
 
 body
 {
