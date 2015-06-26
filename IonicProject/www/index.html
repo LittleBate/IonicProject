@@ -26,17 +26,29 @@
   <body ng-app="BlaBlaCar" ng-controller="BlaBlaCtrl as ctrl" background="img/bckg.jpg">
 
       
-      <script id="connect.html" type="text/ng-template">
+      <script id="signin.html" type="text/ng-template">
 
           <div class="modal">
 
               <!-- Modal header bar -->
               <ion-header-bar class="bar-secondary">
+                  <h1 class="title">Inscritpion</h1>
               </ion-header-bar>
 
               <!-- Modal content area -->
               <ion-content>
-
+                  <div class="row responsive-sm list">
+                      <label class="item item-input">
+                          <input type="text" placeholder="Nom" ng-model="ctrl.nom">
+                      </label>
+                      <label class="item item-input">
+                          <input type="text" placeholder="Login" ng-model="ctrl.login">
+                      </label>
+                      <label class="item item-input">
+                          <input type="text" placeholder="Mot de passe" ng-model="ctrl.mdp">
+                      </label>
+                  </div>
+                  <button class="button button-full button-energized" ng-click="ctrl.signin()">Sign in</button>
               </ion-content>
           </div>
       </script>
@@ -76,7 +88,9 @@
                       </div>
                       <div class="row responsive-sm">
                           <div class="col">
-                              <p class="text-center">20 millions de membres avec profil v�rifi� pour voyager en toute s�r�nit� </p>
+                              <p style="color:white" class="text-center">
+                                  20 millions de membres avec profil v�rifi� pour voyager en toute s�r�nit�
+                              </p>
                           </div>
                       </div>
                       <ion-list>
@@ -299,6 +313,7 @@
                               </label>
                           </div>
                           <button class="button button-full button-energized" ng-click="ctrl.connect()">Login</button>
+                          <button class="button button-full button-energized" ng-click="ctrl.showInscritption()">Sign in</button>
                        </div>                      
                   </div>
               </ion-content>

@@ -1,6 +1,14 @@
 angular.module('BlaBlaCar').controller("BlaBlaCtrl", function ($scope, $ionicModal) {
 
     var viewModel = this;
+    
+     $ionicModal.fromTemplateUrl('signin.html', function(modal) {
+		$scope.connectModal = modal;
+		}, {scope:$scope, animation:'slide-in-up'})
+     
+    viewModel.showInscritption = function() {
+		$scope.connectModal.show();
+	}
 
     viewModel.title = "BlaBlaCar";
 
@@ -26,9 +34,34 @@ angular.module('BlaBlaCar').controller("BlaBlaCtrl", function ($scope, $ionicMod
 
     viewModel.connected = false;
     
+    viewModel.nom = "";
+    
     viewModel.login = "";
     
     viewModel.mdp = "";
+    
+    viewModel.lastUserId = 2;
+    
+    /*
+        Inscrit l'utilisateur et le connect automatiquement
+    */
+    viewModel.signin = function()
+    {
+        viewModel.lastUserId++;
+        user = {            
+            id: viewModel.lastUserId,
+            nom : viewModel.nom,
+            login:viewModel.login,
+            mdp:viewModel.mdp
+        }  
+        viewModel.currentUser = user;
+        viewModel.utilisateurs.push(user);
+        viewModel.connected = true;
+        viewModel.nom = "";    
+        viewModel.login = "";    
+        viewModel.mdp = "";
+        $scope.connectModal.hide();
+    }
     
     /*
         Connecte l'utilisateur à partir du login et du mdp saisie 
@@ -125,6 +158,17 @@ angular.module('BlaBlaCar').controller("BlaBlaCtrl", function ($scope, $ionicMod
         viewModel.newTrajetDepart = "";
         viewModel.newTrajetNbPlaces = 0;
         viewModel.ajoutTrajetValide = true;
+    }
+    
+    /*
+        Supprime le trajet donné de l'application
+    */
+    viewModel.supprimer = function(trajet)
+    {
+        index = viewModel.getIndex(viewModel.trajets, trajet);
+        viewModel.trajets.splice(index, 1);
+        index = viewModel.getIndex(viewModel.trajetsUtilisateur, trajet);
+        viewModel.trajetsUtilisateur.splice(index, 1);        
     }
     
     /*
